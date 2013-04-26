@@ -173,9 +173,12 @@ The second argument of the function is the content you want to use. You can use 
 == Screenshots ==
 
 1. Settings page
-2. Output
+2. Sample output
 
 == Changelog ==
+
+= 0.0.3 =
+- target="_blank" is deprecated, replaced with javascript fallback
 
 = 0.0.2 =
 - minor code refactoring
@@ -184,6 +187,9 @@ The second argument of the function is the content you want to use. You can use 
 created
 
 == Upgrade Notice ==
+
+= 0.0.3 =
+- target="_blank" is deprecated, replaced with javascript fallback
 
 = 0.0.2 =
 - minor code refactoring

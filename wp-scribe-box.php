@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.0.2
+Version: 0.0.3
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.0.2');
+define('WPSB_VERSION', '0.0.3');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -34,17 +34,6 @@ define('WPSB_DEFAULT_AUTO_INSERT_NAME', 'autoinsert');
 define('WPSB_DEFAULT_SHOW_NAME', 'show');
 define('WPSB_DEFAULT_NEWWINDOW_NAME', 'opennewwindow');
 
-// add custom quicktag
-add_action('admin_print_footer_scripts', 'add_wpsb_quicktag', 100);
-function add_wpsb_quicktag() {
-?>
-<script>
-if (typeof QTags != 'undefined') {
-  QTags.addButton('wpsb', 'Scribe Box', '[wp-scribe-box]', '', '', 'add Scribe affiliate box', '' );
-}
-</script>
-<?php }
-
 // localization to allow for translations
 add_action('init', 'wp_scribe_box_translation_file');
 function wp_scribe_box_translation_file() {
@@ -57,6 +46,7 @@ add_action('admin_init', 'wp_scribe_box_options_init');
 function wp_scribe_box_options_init() {
   register_setting('wp_scribe_box_options', WPSB_OPTION, 'wpsb_validation');
   register_wpsb_admin_style();
+	register_wpsb_admin_script();
 }
 // validation function
 function wpsb_validation($input) {
@@ -111,10 +101,10 @@ function wp_scribe_box_page() {
 		<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NOFOLLOW_NAME]); ?> /></td>
         </tr>
 	  <tr valign="top"><td colspan="2"><?php _e('Do you want to add rel="nofollow" to all links?', WPSB_LOCAL); ?></td></tr>
-        <tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window. target=_blank will be added to all links', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', WPSB_LOCAL); ?></label></strong></th>
+        <tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', WPSB_LOCAL); ?></label></strong></th>
 		<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NEWWINDOW_NAME]); ?> /></td>
         </tr>
-	  <tr valign="top"><td colspan="2"><?php _e('Check this box to open links in a new window. target="_blank" will be added to all links', WPSB_LOCAL); ?></td></tr>
+	  <tr valign="top"><td colspan="2"><?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?></td></tr>
         <tr valign="top"><th scope="row"><strong><label title="<?php _e('Select the default image.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]"><?php _e('Default image', WPSB_LOCAL); ?></label></strong></th>
 		<td><select id="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" onChange="picture.src=this.options[this.selectedIndex].getAttribute('data-whichPicture');">
                 <?php $images = explode(",", WPSB_AVAILABLE_IMAGES);
@@ -248,13 +238,13 @@ function scribe_aff_box($atts, $content = null) {
     if ($content) {
       $text = wp_kses_post(force_balance_tags($content));
     } else {
-      $text = '<p><a' . ($opennewwindow ? ' target="_blank" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">Scribe</a> ';
+      $text = '<p><a' . ($opennewwindow ? ' onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">Scribe</a> ';
       $text .= __('shows you the language the audience prefers when searching and discussing on social networks, before you begin to create content.', WPSB_LOCAL);
       $text .= __(' Once your content is created, Scribe reveals other profitable topics and keyword phrases. Scribe analyzes your content, and tells you exactly how to gently tweak it for better search engine rankings. Scribe also analyzes your overall site content to help you execute on your go-forward content strategy.', WPSB_LOCAL) . '</p>';
-      $text .= '<p><a' . ($opennewwindow ? ' target="_blank" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">Scribe</a> ';
+      $text .= '<p><a' . ($opennewwindow ? ' onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">Scribe</a> ';
       $text .= __('helps you crosslink your content to increase usability and time on site, identify websites for guest writing, strategic alliances, and link building, and locate social media users who\'ll want to share your content.', WPSB_LOCAL) . '</p>';
       $text .= '<p>' . __('Scribe is the ultimate optimization tool for empowered online marketing. ', WPSB_LOCAL);
-      $text .= '<a' . ($opennewwindow ? ' target="_blank" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">' . __('See what Scribe can do!', WPSB_LOCAL) . '</a></p>';
+      $text .= '<a' . ($opennewwindow ? ' onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">' . __('See what Scribe can do!', WPSB_LOCAL) . '</a></p>';
     }
     // calculate image url
     $images = explode(",", WPSB_AVAILABLE_IMAGES);
@@ -266,7 +256,7 @@ function scribe_aff_box($atts, $content = null) {
     $imagedata = getimagesize($imageurl);
     $output = '<div id="scribe-box"' . ($rounded ? ' class="wpsb-rounded-corners"' : '') . '>';
     $output .= '<h3>' . __('Get More Traffic and Leads With Less Time and Hassle', WPSB_LOCAL) . '</h3>';
-    $output .= '<a' . ($opennewwindow ? ' target="_blank" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">';
+    $output .= '<a' . ($opennewwindow ? ' onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">';
     $output .= '<img class="alignright" src="' . $imageurl . '" alt="' . __('Scribe', WPSB_LOCAL) . '" title="' . __('Scribe', WPSB_LOCAL) . '" width="' . $imagedata[0] . '" height="' . $imagedata[1] . '" /></a>';
     $output .= do_shortcode($text) . '</div>';
   } else { // plugin disabled
@@ -355,6 +345,20 @@ function register_wp_scribe_box_style() {
     array(), 
     WPSB_VERSION, 
     'all' );
+}
+// enqueue/register the admin JS file
+add_action('admin_enqueue_scripts', 'wpsb_ed_buttons');
+function wpsb_ed_buttons($hook) {
+  if (($hook == 'post-new.php') || ($hook == 'post.php')) {
+    wp_enqueue_script('wpsb_add_editor_button');
+  }
+}
+function register_wpsb_admin_script() {
+  wp_register_script('wpsb_add_editor_button',
+    plugins_url(plugin_basename(dirname(__FILE__)) . '/js/editor_button.js'), 
+    array('quicktags'), 
+    WPSB_VERSION, 
+    true);
 }
 // when plugin is activated, create options array and populate with defaults
 register_activation_hook(__FILE__, 'wpsb_activate');
