@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.0.3
+Version: 0.0.6
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.0.3');
+define('WPSB_VERSION', '0.0.6');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -33,6 +33,17 @@ define('WPSB_DEFAULT_IMAGE_NAME', 'img');
 define('WPSB_DEFAULT_AUTO_INSERT_NAME', 'autoinsert');
 define('WPSB_DEFAULT_SHOW_NAME', 'show');
 define('WPSB_DEFAULT_NEWWINDOW_NAME', 'opennewwindow');
+
+// oh no you don't
+if (!defined('ABSPATH')) {
+  wp_die(__('Do not access this file directly.', WPSB_LOCAL));
+}
+
+// delete option when plugin is uninstalled
+register_uninstall_hook(__FILE__, 'uninstall_wpsb_plugin');
+function uninstall_wpsb_plugin() {
+  delete_option(WPSB_OPTION);
+}
 
 // localization to allow for translations
 add_action('init', 'wp_scribe_box_translation_file');
@@ -123,25 +134,30 @@ function wp_scribe_box_page() {
     <table class="widefat">
       <thead>
         <tr>
-          <th>Argument</th>
-	    <th>Type</th>
-          <th>Default Value</th>
+          <th title="<?php _e('The name of the parameter', WPSB_LOCAL); ?>"><?php _e('Argument', WPSB_LOCAL); ?></th>
+	  <th title="<?php _e('Is this parameter required?', WPSB_LOCAL); ?>"><?php _e('Required?', WPSB_LOCAL); ?></th>
+          <th title="<?php _e('What data type this parameter accepts', WPSB_LOCAL); ?>"><?php _e('Type', WPSB_LOCAL); ?></th>
+          <th title="<?php _e('What, if any, is the default if no value is specified', WPSB_LOCAL); ?>"><?php _e('Default Value', WPSB_LOCAL); ?></th>
         </tr>
       </thead>
       <tbody>
-    <?php $plugin_defaults = wpsb_shortcode_defaults(); foreach($plugin_defaults as $key => $value) { ?>
+    <?php $plugin_defaults_keys = array_keys(wpsb_shortcode_defaults());
+					$plugin_defaults_values = array_values(wpsb_shortcode_defaults());
+					$wpsb_required = wpsb_required_parameters();
+					for($i=0; $i<count($plugin_defaults_keys);$i++) { ?>
         <tr>
-          <td><?php echo $key; ?></td>
-	    <td><?php echo gettype($value); ?></td>
-          <td> <?php 
-						if ($value === true) {
+          <td><?php echo $plugin_defaults_keys[$i]; ?></td>
+					<td><?php echo $wpsb_required[$i]; ?></td>
+          <td><?php echo gettype($plugin_defaults_values[$i]); ?></td>
+          <td><?php 
+						if ($plugin_defaults_values[$i] === true) {
 							echo 'true';
-						} elseif ($value === false) {
+						} elseif ($plugin_defaults_values[$i] === false) {
 							echo 'false';
-						} elseif ($value === '') {
+						} elseif ($plugin_defaults_values[$i] === '') {
 							echo '<em>(this value is blank by default)</em>';
 						} else {
-							echo $value;
+							echo $plugin_defaults_values[$i];
 						} ?></td>
         </tr>
     <?php } ?>
@@ -233,7 +249,7 @@ function scribe_aff_box($atts, $content = null) {
   // ******************************
   if ($enabled) {
     // enqueue CSS only on pages with shortcode
-    wp_enqueue_style('wp_scribe_box_style');
+    wp_scribe_box_styles();
 
     if ($content) {
       $text = wp_kses_post(force_balance_tags($content));
@@ -381,5 +397,16 @@ function wpsb_shortcode_defaults() {
     WPSB_DEFAULT_NEWWINDOW_NAME => WPSB_DEFAULT_NEWWINDOW, 
     WPSB_DEFAULT_SHOW_NAME => WPSB_DEFAULT_SHOW
     );
+}
+// function to return parameter status (required or not)
+function wpsb_required_parameters() {
+  return array(
+    'true',
+    'false',
+    'false',
+    'false',
+    'false',
+    'false'
+  );
 }
 ?>

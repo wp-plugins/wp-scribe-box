@@ -170,12 +170,28 @@ If you are using the PHP function, do this:
 
 The second argument of the function is the content you want to use. You can use HTML tags and shortcodes in this string.
 
+= I don't see the plugin toolbar button(s). =
+
+This plugin adds one or more toolbar buttons to the HTML editor. You will not see them on the Visual editor.
+
+The label on the toolbar button is "Scribe Box".
+
 == Screenshots ==
 
 1. Settings page
 2. Sample output
 
 == Changelog ==
+
+= 0.0.6 =
+fixed uninstall routine so it actually works now
+
+= 0.0.5 =
+- updated the plugin settings page list of parameters to indicate whether they are required or not
+- updated FAQ section of readme.txt
+
+= 0.0.4 =
+some security hardening added
 
 = 0.0.3 =
 - target="_blank" is deprecated, replaced with javascript fallback
@@ -187,6 +203,16 @@ The second argument of the function is the content you want to use. You can use 
 created
 
 == Upgrade Notice ==
+
+= 0.0.6 =
+fixed uninstall routine so it actually works now
+
+= 0.0.5 =
+- updated the plugin settings page list of parameters to indicate whether they are required or not
+- updated FAQ section of readme.txt
+
+= 0.0.4 =
+some security hardening added
 
 = 0.0.3 =
 - target="_blank" is deprecated, replaced with javascript fallback
