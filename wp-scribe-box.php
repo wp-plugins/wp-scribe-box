@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.0.6
+Version: 0.0.7
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.0.6');
+define('WPSB_VERSION', '0.0.7');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -166,6 +166,9 @@ function wp_scribe_box_page() {
     <?php screen_icon('edit-comments'); ?>
     <h3>Support</h3>
 	<div class="support">
+		<?php echo '<a href="http://wordpress.org/extend/plugins/' . WPSB_SLUG . '/">' . __('Documentation', WPSB_LOCAL) . '</a> | ';
+        echo '<a href="http://wordpress.org/plugins/' . WPSB_SLUG . '/faq/">' . __('FAQ', WPSB_LOCAL) . '</a><br />';
+			?>
       If you like this plugin, please <a href="http://wordpress.org/support/view/plugin-reviews/<?php echo WPSB_SLUG; ?>/">rate it on WordPress.org</a> and click the "Works" button so others know it will work for your WordPress version. For support please visit the <a href="http://wordpress.org/support/plugin/<?php echo WPSB_SLUG; ?>">forums</a>. <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Donate with PayPal" width="92" height="26" /></a>
     </div>
   </div>
@@ -339,6 +342,21 @@ function wp_scribe_box_plugin_settings_link($links) {
   $settings_link = '<a href="options-general.php?page=wp-scribe-box">' . __('Settings', WPSB_LOCAL) . '</a>'; 
   array_unshift($links, $settings_link); 
   return $links; 
+}
+// http://wpengineer.com/1295/meta-links-for-wordpress-plugins/
+add_filter('plugin_row_meta', 'wpsb_meta_links', 10, 2);
+function wpsb_meta_links($links, $file) {
+  $plugin = plugin_basename(__FILE__);
+  // create link
+  if ($file == $plugin) {
+    $links = array_merge($links,
+      array(
+        '<a href="http://wordpress.org/support/plugin/' . WPSB_SLUG . '">' . __('Support', WPSB_LOCAL) . '</a>',
+        '<a href="http://wordpress.org/extend/plugins/' . WPSB_SLUG . '/">' . __('Documentation', WPSB_LOCAL) . '</a>',
+        '<a href="http://wordpress.org/plugins/' . WPSB_SLUG . '/faq/">' . __('FAQ', WPSB_LOCAL) . '</a>'
+    ));
+  }
+  return $links;
 }
 // enqueue/register the admin CSS file
 function wpsb_admin_styles() {

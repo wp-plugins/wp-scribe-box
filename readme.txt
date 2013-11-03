@@ -183,6 +183,10 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.0.7 =
+- refactored admin CSS
+- added helpful links on plugin settings page and plugins page
+
 = 0.0.6 =
 fixed uninstall routine so it actually works now
 
@@ -203,6 +207,10 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.0.7 =
+- refactored admin CSS
+- added helpful links on plugin settings page and plugins page
 
 = 0.0.6 =
 fixed uninstall routine so it actually works now
