@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.0.7
+Version: 0.0.8
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.0.7');
+define('WPSB_VERSION', '0.0.8');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -84,7 +84,6 @@ function wp_scribe_box_page() {
   }
 ?>
   <div class="wrap">
-    <?php screen_icon(); ?>
     <h2><?php echo WPSB_PLUGIN_NAME; ?></h2>
     <form method="post" action="options.php">
       <div>You are running plugin version <strong><?php echo WPSB_VERSION; ?></strong>.</div>
@@ -163,7 +162,6 @@ function wp_scribe_box_page() {
     <?php } ?>
     </tbody>
     </table>
-    <?php screen_icon('edit-comments'); ?>
     <h3>Support</h3>
 	<div class="support">
 		<?php echo '<a href="http://wordpress.org/extend/plugins/' . WPSB_SLUG . '/">' . __('Documentation', WPSB_LOCAL) . '</a> | ';
@@ -366,7 +364,7 @@ function register_wpsb_admin_style() {
   wp_register_style( 'wpsb_admin_style',
     plugins_url(plugin_basename(dirname(__FILE__)) . '/css/admin.css'),
     array(),
-    WPSB_VERSION,
+    WPSB_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/css/admin.css')),
     'all' );
 }
 // enqueue/register the plugin CSS file
@@ -377,7 +375,7 @@ function register_wp_scribe_box_style() {
   wp_register_style('wp_scribe_box_style', 
     plugins_url(plugin_basename(dirname(__FILE__)) . '/css/wp-scribe-box.css'), 
     array(), 
-    WPSB_VERSION, 
+    WPSB_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/css/wp-scribe-box.css')),
     'all' );
 }
 // enqueue/register the admin JS file
@@ -391,7 +389,7 @@ function register_wpsb_admin_script() {
   wp_register_script('wpsb_add_editor_button',
     plugins_url(plugin_basename(dirname(__FILE__)) . '/js/editor_button.js'), 
     array('quicktags'), 
-    WPSB_VERSION, 
+    WPSB_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/js/editor_button.js')),
     true);
 }
 // when plugin is activated, create options array and populate with defaults

@@ -1,7 +1,7 @@
 === WP Scribe Box ===
 Tags: studiopress, scribe, marketing, commission, box, rounded, image
 Requires at least: 3.5
-Tested up to: 3.7.1
+Tested up to: 3.8.1
 Contributors: jp2112
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW
 Stable tag: trunk
@@ -183,6 +183,11 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.0.8 =
+- All CSS and JS automatically bust caches
+- removed screen_icon() (deprecated)
+- updated for WP 3.8.1
+
 = 0.0.7 =
 - refactored admin CSS
 - added helpful links on plugin settings page and plugins page
@@ -207,6 +212,11 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.0.8 =
+- All CSS and JS automatically bust caches, 
+- removed screen_icon() (deprecated), 
+- updated for WP 3.8.1
 
 = 0.0.7 =
 - refactored admin CSS
