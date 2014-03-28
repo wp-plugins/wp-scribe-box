@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.0.8
+Version: 0.0.9
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.0.8');
+define('WPSB_VERSION', '0.0.9');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -84,9 +84,10 @@ function wp_scribe_box_page() {
   }
 ?>
   <div class="wrap">
-    <h2><?php echo WPSB_PLUGIN_NAME; ?></h2>
+    <h2><?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
     <form method="post" action="options.php">
       <div>You are running plugin version <strong><?php echo WPSB_VERSION; ?></strong>.</div>
+      <?php submit_button(); ?>
       <?php settings_fields('wp_scribe_box_options'); ?>
       <?php $options = wpsb_getpluginoptions(); ?>
 	<?php /* update_option(WPSB_OPTION, $options); */ ?>
@@ -129,13 +130,13 @@ function wp_scribe_box_page() {
       </table>
       <?php submit_button(); ?>
     </form>
-    <h3>Plugin Arguments and Defaults</h3>
+    <h3>Plugin Parameters and Default Values</h3>
     <table class="widefat">
       <thead>
         <tr>
-          <th title="<?php _e('The name of the parameter', WPSB_LOCAL); ?>"><?php _e('Argument', WPSB_LOCAL); ?></th>
-	  <th title="<?php _e('Is this parameter required?', WPSB_LOCAL); ?>"><?php _e('Required?', WPSB_LOCAL); ?></th>
-          <th title="<?php _e('What data type this parameter accepts', WPSB_LOCAL); ?>"><?php _e('Type', WPSB_LOCAL); ?></th>
+          <th title="<?php _e('The name of the parameter', WPSB_LOCAL); ?>"><?php _e('Parameter Name', WPSB_LOCAL); ?></th>
+	  <th title="<?php _e('Is this parameter required?', WPSB_LOCAL); ?>"><?php _e('Is Required?', WPSB_LOCAL); ?></th>
+          <th title="<?php _e('What data type this parameter accepts', WPSB_LOCAL); ?>"><?php _e('Data Type', WPSB_LOCAL); ?></th>
           <th title="<?php _e('What, if any, is the default if no value is specified', WPSB_LOCAL); ?>"><?php _e('Default Value', WPSB_LOCAL); ?></th>
         </tr>
       </thead>
@@ -146,11 +147,17 @@ function wp_scribe_box_page() {
 					for($i=0; $i<count($plugin_defaults_keys);$i++) { ?>
         <tr>
           <td><?php echo $plugin_defaults_keys[$i]; ?></td>
-					<td><?php echo $wpsb_required[$i]; ?></td>
+					<td><?php 
+					  if ($wpsb_required[$i] == true) {
+						  echo '<strong>true</strong>';
+						} else {
+							echo 'false'; 
+						}
+					?></td>
           <td><?php echo gettype($plugin_defaults_values[$i]); ?></td>
           <td><?php 
 						if ($plugin_defaults_values[$i] === true) {
-							echo 'true';
+							echo '<strong>true</strong>';
 						} elseif ($plugin_defaults_values[$i] === false) {
 							echo 'false';
 						} elseif ($plugin_defaults_values[$i] === '') {
