@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.0.9
+Version: 0.1.0
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.0.9');
+define('WPSB_VERSION', '0.1.0');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -148,7 +148,7 @@ function wp_scribe_box_page() {
         <tr>
           <td><?php echo $plugin_defaults_keys[$i]; ?></td>
 					<td><?php 
-					  if ($wpsb_required[$i] == true) {
+					  if ($wpsb_required[$i] === true) {
 						  echo '<strong>true</strong>';
 						} else {
 							echo 'false'; 
@@ -424,12 +424,12 @@ function wpsb_shortcode_defaults() {
 // function to return parameter status (required or not)
 function wpsb_required_parameters() {
   return array(
-    'true',
-    'false',
-    'false',
-    'false',
-    'false',
-    'false'
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
   );
 }
 ?>

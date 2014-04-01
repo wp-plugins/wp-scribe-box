@@ -183,6 +183,9 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.1.0 =
+- minor bug with parameter table on plugin settings page
+
 = 0.0.9 =
 - added submit button to the top of the plugin settings form
 - spruced up plugin settings page
@@ -217,6 +220,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.0 =
+- minor bug with parameter table on plugin settings page
 
 = 0.0.9 =
 - added submit button to the top of the plugin settings form, spruced up plugin settings page, minor CSS edits
