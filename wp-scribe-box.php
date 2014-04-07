@@ -3,13 +3,13 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.1.0
+Version: 0.1.1
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 // plugin constants
-define('WPSB_VERSION', '0.1.0');
+define('WPSB_VERSION', '0.1.1');
 define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
 define('WPSB_SLUG', 'wp-scribe-box');
 define('WPSB_OPTION', 'wp_scribe_box');
@@ -19,7 +19,7 @@ define('WPSB_DEFAULT_ENABLED', true);
 define('WPSB_DEFAULT_URL', '');
 define('WPSB_ROUNDED', false);
 define('WPSB_NOFOLLOW', true);
-define('WPSB_AVAILABLE_IMAGES', 'scribe-125x125,scribe-235x247,scribe-250x250,scribe-260x125,scribe-300x250');
+define('WPSB_AVAILABLE_IMAGES', 'scribe-125x125,scribe-235x247,scribe-250x250,scribe-250x250-2,scribe-260x125,scribe-300x250');
 define('WPSB_DEFAULT_IMAGE', '');
 define('WPSB_DEFAULT_AUTO_INSERT', false);
 define('WPSB_DEFAULT_SHOW', false);
@@ -84,13 +84,13 @@ function wp_scribe_box_page() {
   }
 ?>
   <div class="wrap">
-    <h2><?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
+    <h2 id="plugintitle"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/scribe.png')) ?>" title="" alt="" height="64" width="64" align="absmiddle" /><?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
+    <div>You are running plugin version <strong><?php echo WPSB_VERSION; ?></strong>.</div>
     <form method="post" action="options.php">
-      <div>You are running plugin version <strong><?php echo WPSB_VERSION; ?></strong>.</div>
-      <?php submit_button(); ?>
       <?php settings_fields('wp_scribe_box_options'); ?>
       <?php $options = wpsb_getpluginoptions(); ?>
-	<?php /* update_option(WPSB_OPTION, $options); */ ?>
+		<h3 id="settings"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/settings.png')) ?>" title="" alt="" height="61" width="64" align="absmiddle" />Plugin Settings</h3>
+      <?php submit_button(); ?>		
       <table class="form-table" id="theme-options-wrap">
         <tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', WPSB_LOCAL); ?></label></strong></th>
 		<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ENABLED_NAME]); ?> /></td>
@@ -112,10 +112,12 @@ function wp_scribe_box_page() {
 		<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NOFOLLOW_NAME]); ?> /></td>
         </tr>
 	  <tr valign="top"><td colspan="2"><?php _e('Do you want to add rel="nofollow" to all links?', WPSB_LOCAL); ?></td></tr>
-        <tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', WPSB_LOCAL); ?></label></strong></th>
+
+		<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', WPSB_LOCAL); ?></label></strong></th>
 		<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NEWWINDOW_NAME]); ?> /></td>
         </tr>
-	  <tr valign="top"><td colspan="2"><?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?></td></tr>
+	  <tr valign="top"><td colspan="2"><?php _e('Check this box to open links in a new window. Requires Javascript.', WPSB_LOCAL); ?></td></tr>
+		
         <tr valign="top"><th scope="row"><strong><label title="<?php _e('Select the default image.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]"><?php _e('Default image', WPSB_LOCAL); ?></label></strong></th>
 		<td><select id="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" onChange="picture.src=this.options[this.selectedIndex].getAttribute('data-whichPicture');">
                 <?php $images = explode(",", WPSB_AVAILABLE_IMAGES);
@@ -126,12 +128,11 @@ function wp_scribe_box_page() {
                       } ?>
             </select></td></tr>
         <tr><td colspan="2"><img src="<?php if (!$selectedimage) { echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/' . WPSB_DEFAULT_IMAGE . '.png')); } else { echo $selectedimage; } ?>" id="picture" /></td></tr>
-	  <tr valign="top"><td colspan="2"><?php _e('Select the default image.', WPSB_LOCAL); ?></td></tr>
       </table>
       <?php submit_button(); ?>
     </form>
-    <h3>Plugin Parameters and Default Values</h3>
-    <table class="widefat">
+    <h3 id="parameters"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/parameters.png')) ?>" title="" alt="" height="64" width="64" align="absmiddle" /> Plugin Parameters and Default Values</h3>
+		<table class="widefat">
       <thead>
         <tr>
           <th title="<?php _e('The name of the parameter', WPSB_LOCAL); ?>"><?php _e('Parameter Name', WPSB_LOCAL); ?></th>
@@ -169,13 +170,17 @@ function wp_scribe_box_page() {
     <?php } ?>
     </tbody>
     </table>
-    <h3>Support</h3>
-	<div class="support">
+    <h3 id="support"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/support.png')) ?>" title="" alt="" height="64" width="64" align="absmiddle" /> Support</h3>
+  	<div class="support">
 		<?php echo '<a href="http://wordpress.org/extend/plugins/' . WPSB_SLUG . '/">' . __('Documentation', WPSB_LOCAL) . '</a> | ';
         echo '<a href="http://wordpress.org/plugins/' . WPSB_SLUG . '/faq/">' . __('FAQ', WPSB_LOCAL) . '</a><br />';
 			?>
-      If you like this plugin, please <a href="http://wordpress.org/support/view/plugin-reviews/<?php echo WPSB_SLUG; ?>/">rate it on WordPress.org</a> and click the "Works" button so others know it will work for your WordPress version. For support please visit the <a href="http://wordpress.org/support/plugin/<?php echo WPSB_SLUG; ?>">forums</a>. <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Donate with PayPal" width="92" height="26" /></a>
-    </div>
+      If you like this plugin, please <a href="http://wordpress.org/support/view/plugin-reviews/<?php echo WPSB_SLUG; ?>/">rate it on WordPress.org</a> and click the <a href="http://wordpress.org/plugins/<?php echo WPSB_SLUG; ?>/#compatibility">Works</a> button. For support please visit the <a href="http://wordpress.org/support/plugin/<?php echo WPSB_SLUG; ?>">forums</a>.
+			<br />
+			<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Donate with PayPal" width="92" height="26" /></a>
+			<br /><br />
+			<small>Disclaimer: This plugin is not affiliated with or endorsed by Copyblogger Media.</small>
+			</div>
   </div>
   <?php 
 }

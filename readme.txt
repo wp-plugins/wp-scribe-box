@@ -183,6 +183,10 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.1.1 =
+- minor plugin settings page update
+- another image added to the rotation
+
 = 0.1.0 =
 - minor bug with parameter table on plugin settings page
 
@@ -220,6 +224,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+- minor plugin settings page update, another image added to the rotation
 
 = 0.1.0 =
 - minor bug with parameter table on plugin settings page
