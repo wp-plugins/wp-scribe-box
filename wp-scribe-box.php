@@ -147,12 +147,12 @@ function wp_scribe_box_page() {
 					$wpsb_required = wpsb_required_parameters();
 					for($i=0; $i<count($plugin_defaults_keys);$i++) { ?>
         <tr>
-          <td><?php echo $plugin_defaults_keys[$i]; ?></td>
+          <td><strong><?php echo $plugin_defaults_keys[$i]; ?></strong></td>
 					<td><?php 
 					  if ($wpsb_required[$i] === true) {
-						  echo '<strong>true</strong>';
+						  echo '<strong>Y</strong>';
 						} else {
-							echo 'false'; 
+							echo 'N'; 
 						}
 					?></td>
           <td><?php echo gettype($plugin_defaults_values[$i]); ?></td>
@@ -163,8 +163,10 @@ function wp_scribe_box_page() {
 							echo 'false';
 						} elseif ($plugin_defaults_values[$i] === '') {
 							echo '<em>(this value is blank by default)</em>';
-						} else {
+						} elseif (is_numeric($plugin_defaults_values[$i])) {
 							echo $plugin_defaults_values[$i];
+						} else { 
+							echo '"' . $plugin_defaults_values[$i] . '"';
 						} ?></td>
         </tr>
     <?php } ?>
