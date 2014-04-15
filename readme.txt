@@ -185,6 +185,9 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.1.3 =
+- OK, I am going to stop playing with the plugin for now
+
 = 0.1.2 =
 - prepare strings for internationalization
 - plugin now requires WP 3.5 and PHP 5.0 and above
@@ -231,6 +234,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.3 =
+- OK, I am going to stop playing with the plugin for now
 
 = 0.1.2 =
 - prepare strings for internationalization, plugin now requires WP 3.5 and PHP 5.0 and above, minor code optimization

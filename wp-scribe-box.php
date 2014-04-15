@@ -3,36 +3,15 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.1.2
+Version: 0.1.3
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 
-define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-
-// requirements: PHP 5.0 and above, WordPress 3.5 and above
-// http://10up.com/blog/wordpress-plug-in-self-deactivation/
-if ((version_compare(phpversion(), '5.0', '<')) || (version_compare(get_bloginfo('version'), '3.5', '<'))) {
-	global $pagenow;
-	if (is_admin() && ($pagenow == 'plugins.php')) { // we are on plugins page
-		add_action('admin_init', 'wpsb_plugin_deactivate');
-		add_action('admin_notices', 'wpsb_plugin_deactivation_notice');
-		
-		function wpsb_plugin_deactivate() {
-			deactivate_plugins(plugin_basename(__FILE__));
-		}
-		
-		function wpsb_plugin_deactivation_notice() {
-			echo '<div class="error"><p><strong>' . WPSB_PLUGIN_NAME . '</strong> requires PHP 5.0 and WordPress 3.5 at minimum; the plugin has been <strong>deactivated</strong>.</p></div>';
-			if (isset($_GET['activate'])) {
-				unset( $_GET['activate'] );
-			}
-		}
-	}
-} else {
 	// plugin constants
-	define('WPSB_VERSION', '0.1.2');
+	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
+	define('WPSB_VERSION', '0.1.3');
 	define('WPSB_SLUG', 'wp-scribe-box');
 	define('WPSB_OPTION', 'wp_scribe_box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
@@ -480,5 +459,4 @@ if ((version_compare(phpversion(), '5.0', '<')) || (version_compare(get_bloginfo
 			false
 		);
 	}
-}
 ?>
