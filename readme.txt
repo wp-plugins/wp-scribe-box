@@ -14,6 +14,8 @@ Display the Scribe affiliate marketing box on your website using shortcodes or P
 
 WP Scribe Box is a plugin for WordPress that helps you create compelling content and optimize it for social search. Copyblogger Media (the company that makes Scribe) affiliates can earn commission on every referral. This content box displays marketing text and logo that can help drive referrals through your website.
 
+Requires WP 3.5 and PHP 5.0 and above
+
 = Features =
 
 - Display your affiliate link anywhere
@@ -178,10 +180,15 @@ The label on the toolbar button is "Scribe Box".
 
 == Screenshots ==
 
-1. Settings page
+1. Plugin settings page
 2. Sample output
 
 == Changelog ==
+
+= 0.1.2 =
+- prepare strings for internationalization
+- plugin now requires WP 3.5 and PHP 5.0 and above
+- minor code optimization
 
 = 0.1.1 =
 - minor plugin settings page update
@@ -224,6 +231,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+- prepare strings for internationalization, plugin now requires WP 3.5 and PHP 5.0 and above, minor code optimization
 
 = 0.1.1 =
 - minor plugin settings page update, another image added to the rotation
