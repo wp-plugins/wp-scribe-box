@@ -3,7 +3,7 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.1.3
+Version: 0.1.4
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,10 +11,13 @@ License: GPLv2 or later
 
 	// plugin constants
 	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-	define('WPSB_VERSION', '0.1.3');
+	define('WPSB_VERSION', '0.1.4');
 	define('WPSB_SLUG', 'wp-scribe-box');
-	define('WPSB_OPTION', 'wp_scribe_box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
+	define('WPSB_OPTION', 'wp_scribe_box');
+	define('WPSB_OPTIONS_NAME', 'wp_scribe_box_options');
+	define('WPSB_PERMISSIONS_LEVEL', 'manage_options');
+	define('WPSB_PATH', plugin_basename(dirname(__FILE__)));
 	/* defaults */
 	define('WPSB_DEFAULT_ENABLED', true);
 	define('WPSB_DEFAULT_URL', '');
@@ -49,14 +52,14 @@ License: GPLv2 or later
 	// localization to allow for translations
 	add_action('init', 'wp_scribe_box_translation_file');
 	function wp_scribe_box_translation_file() {
-		$plugin_path = plugin_basename(dirname(__FILE__)) . '/translations';
+		$plugin_path = plugin_basename(dirname(__FILE__) . '/translations');
 		load_plugin_textdomain(WPSB_LOCAL, '', $plugin_path);
 		register_wp_scribe_box_style();
 	}
 	// tell WP that we are going to use new options
 	add_action('admin_init', 'wp_scribe_box_options_init');
 	function wp_scribe_box_options_init() {
-		register_setting('wp_scribe_box_options', WPSB_OPTION, 'wpsb_validation');
+		register_setting(WPSB_OPTIONS_NAME, WPSB_OPTION, 'wpsb_validation');
 		register_wpsb_admin_style();
 		register_wpsb_admin_script();
 	}
@@ -74,13 +77,13 @@ License: GPLv2 or later
 	// add Settings sub-menu
 	add_action('admin_menu', 'wpsb_plugin_menu');
 	function wpsb_plugin_menu() {
-		add_options_page(WPSB_PLUGIN_NAME, WPSB_PLUGIN_NAME, 'manage_options', WPSB_SLUG, 'wp_scribe_box_page');
+		add_options_page(WPSB_PLUGIN_NAME, WPSB_PLUGIN_NAME, WPSB_PERMISSIONS_LEVEL, WPSB_SLUG, 'wp_scribe_box_page');
 	}
 	// plugin settings page
 	// http://planetozh.com/blog/2009/05/handling-plugins-options-in-wordpress-28-with-register_setting/
 	function wp_scribe_box_page() {
 		// check perms
-		if (!current_user_can('manage_options')) {
+		if (!current_user_can(WPSB_PERMISSIONS_LEVEL)) {
 			wp_die(__('You do not have sufficient permission to access this page', WPSB_LOCAL));
 		}
 	?>
@@ -88,37 +91,38 @@ License: GPLv2 or later
 			<h2 id="plugintitle"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/scribe.png')) ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
 			<div>You are running plugin version <strong><?php echo WPSB_VERSION; ?></strong>.</div>
 			<form method="post" action="options.php">
-				<?php settings_fields('wp_scribe_box_options'); ?>
-				<?php $options = wpsb_getpluginoptions(); ?>
-				<h3 id="settings"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/settings.png')) ?>" title="" alt="" height="61" width="64" align="absmiddle" />Plugin Settings</h3>
+			<?php settings_fields(WPSB_OPTIONS_NAME); ?>
+			<?php $options = wpsb_getpluginoptions(); ?>
+			<?php update_option(WPSB_OPTION, $options); ?>
+			<h3 id="settings"><img src="<?php echo plugins_url(plugin_basename(dirname(__FILE__) . '/images/settings.png')) ?>" title="" alt="" height="61" width="64" align="absmiddle" />Plugin Settings</h3>
 				<?php submit_button(); ?>		
 				<table class="form-table" id="theme-options-wrap">
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', WPSB_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ENABLED_NAME]); ?> /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', WPSB_LOCAL); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ENABLED_NAME]); ?> /></td>
 					</tr>
 					<tr valign="top"><td colspan="2"><?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', WPSB_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_URL_NAME; ?>]"><?php _e('Your Affiliate URL', WPSB_LOCAL); ?></label></strong></th>
-						<td><input type="url" id="wp_scribe_box[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" value="<?php echo $options[WPSB_DEFAULT_URL_NAME]; ?>" /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]"><?php _e('Your Affiliate URL', WPSB_LOCAL); ?></label></strong></th>
+						<td><input type="url" id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" value="<?php echo $options[WPSB_DEFAULT_URL_NAME]; ?>" /></td>
 					</tr>
 					<tr valign="top"><td colspan="2"><?php _e('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', WPSB_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to apply rounded corners CSS to the output?', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]"><?php _e('Rounded corners CSS?', WPSB_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ROUNDED_NAME]); ?> /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to apply rounded corners CSS to the output?', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]"><?php _e('Rounded corners CSS?', WPSB_LOCAL); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ROUNDED_NAME]); ?> /></td>
 					</tr>
 					<tr valign="top"><td colspan="2"><?php _e('Do you want to apply rounded corners CSS to the output?', WPSB_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to automatically insert the output at the end of blog posts. If you do not do this then you will need to manually insert shortcode or call the function in PHP.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]"><?php _e('Auto insert Scribe box at the end of posts?', WPSB_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_AUTO_INSERT_NAME]); ?> /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to automatically insert the output at the end of blog posts. If you do not do this then you will need to manually insert shortcode or call the function in PHP.', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]"><?php _e('Auto insert Scribe box at the end of posts?', WPSB_LOCAL); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_AUTO_INSERT_NAME]); ?> /></td>
 					</tr>
 					<tr valign="top"><td colspan="2"><?php _e('Check this box to automatically insert the output at the end of blog posts. If you don\'t do this then you will need to manually insert shortcode or call the function in PHP.', WPSB_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to add rel=nofollow to all links?', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]"><?php _e('Nofollow links?', WPSB_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NOFOLLOW_NAME]); ?> /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to add rel=nofollow to all links?', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]"><?php _e('Nofollow links?', WPSB_LOCAL); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NOFOLLOW_NAME]); ?> /></td>
 					</tr>
 					<tr valign="top"><td colspan="2"><?php _e('Do you want to add rel="nofollow" to all links?', WPSB_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', WPSB_LOCAL); ?></label></strong></th>
-						<td><input type="checkbox" id="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NEWWINDOW_NAME]); ?> /></td>
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window.', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', WPSB_LOCAL); ?></label></strong></th>
+						<td><input type="checkbox" id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NEWWINDOW_NAME]); ?> /></td>
 					</tr>
 					<tr valign="top"><td colspan="2"><?php _e('Check this box to open links in a new window. Requires Javascript.', WPSB_LOCAL); ?></td></tr>
-					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Select the default image.', WPSB_LOCAL); ?>" for="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]"><?php _e('Default image', WPSB_LOCAL); ?></label></strong></th>
-						<td><select id="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" name="wp_scribe_box[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" onChange="picture.src=this.options[this.selectedIndex].getAttribute('data-whichPicture');">
+					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Select the default image.', WPSB_LOCAL); ?>" for="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]"><?php _e('Default image', WPSB_LOCAL); ?></label></strong></th>
+						<td><select id="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" name="<?php echo WPSB_OPTION; ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" onChange="picture.src=this.options[this.selectedIndex].getAttribute('data-whichPicture');">
 									<?php $images = explode(",", WPSB_AVAILABLE_IMAGES);
 												for($i=0, $imagecount=count($images); $i < $imagecount; $i++) {
 													$imageurl = plugins_url(plugin_basename(dirname(__FILE__) . '/images/' . $images[$i] . '.png'));
@@ -287,7 +291,7 @@ License: GPLv2 or later
 			wp_scribe_box_styles();
 
 			if ($content) {
-				$text = wp_kses_post(force_balance_tags($content));
+				$text = wp_kses(force_balance_tags($content));
 			} else {
 				$text = '<p><a' . ($opennewwindow ? ' onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">Scribe</a> ';
 				$text .= __('shows you the language the audience prefers when searching and discussing on social networks, before you begin to create content.', WPSB_LOCAL);
@@ -337,7 +341,7 @@ License: GPLv2 or later
 	function wpsb_showAdminMessages() {
 		// http://wptheming.com/2011/08/admin-notices-in-wordpress/
 		global $pagenow;
-		if (current_user_can('manage_options')) { // user has privilege
+		if (current_user_can(WPSB_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') {
 				if ($_GET['page'] == WPSB_SLUG) { // on WP Scribe Box settings page
 					$options = wpsb_getpluginoptions();
@@ -359,7 +363,7 @@ License: GPLv2 or later
 	add_action('admin_head', 'insert_wpsb_admin_css');
 	function insert_wpsb_admin_css() {
 		global $pagenow;
-		if (current_user_can('manage_options')) { // user has privilege
+		if (current_user_can(WPSB_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') {
 				if ($_GET['page'] == WPSB_SLUG) { // we are on settings page
 					wpsb_admin_styles();
@@ -396,7 +400,7 @@ License: GPLv2 or later
 	}
 	function register_wpsb_admin_style() {
 		wp_register_style( 'wpsb_admin_style',
-			plugins_url(plugin_basename(dirname(__FILE__)) . '/css/admin.css'),
+			plugins_url(WPSB_PATH . '/css/admin.css'),
 			array(),
 			WPSB_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/css/admin.css')),
 			'all' );
@@ -407,7 +411,7 @@ License: GPLv2 or later
 	}
 	function register_wp_scribe_box_style() {
 		wp_register_style('wp_scribe_box_style', 
-			plugins_url(plugin_basename(dirname(__FILE__)) . '/css/wp-scribe-box.css'), 
+			plugins_url(WPSB_PATH . '/css/wp-scribe-box.css'), 
 			array(), 
 			WPSB_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/css/wp-scribe-box.css')),
 			'all' );
@@ -421,7 +425,7 @@ License: GPLv2 or later
 	}
 	function register_wpsb_admin_script() {
 		wp_register_script('wpsb_add_editor_button',
-			plugins_url(plugin_basename(dirname(__FILE__)) . '/js/editor_button.js'), 
+			plugins_url(WPSB_PATH . '/js/editor_button.js'), 
 			array('quicktags'), 
 			WPSB_VERSION . "_" . date('njYHis', filemtime(dirname(__FILE__) . '/js/editor_button.js')),
 			true);

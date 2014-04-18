@@ -1,0 +1,271 @@
+# Copyright (C) 2014 WP Scribe Box
+# This file is distributed under the same license as the WP Scribe Box package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Scribe Box 0.1.3\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-scribe-box\n"
+"POT-Creation-Date: 2014-04-16 00:15:03+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: wp-scribe-box.php:40
+msgid "Do not access this file directly."
+msgstr ""
+
+#: wp-scribe-box.php:84
+msgid "You do not have sufficient permission to access this page"
+msgstr ""
+
+#: wp-scribe-box.php:96 wp-scribe-box.php:99
+msgid "Is plugin enabled? Uncheck this to turn it off temporarily."
+msgstr ""
+
+#: wp-scribe-box.php:96
+msgid "Plugin enabled?"
+msgstr ""
+
+#: wp-scribe-box.php:100 wp-scribe-box.php:103
+msgid ""
+"Enter your affiliate URL here. This will be inserted wherever you use the "
+"shortcode."
+msgstr ""
+
+#: wp-scribe-box.php:100
+msgid "Your Affiliate URL"
+msgstr ""
+
+#: wp-scribe-box.php:104 wp-scribe-box.php:107
+msgid "Do you want to apply rounded corners CSS to the output?"
+msgstr ""
+
+#: wp-scribe-box.php:104
+msgid "Rounded corners CSS?"
+msgstr ""
+
+#: wp-scribe-box.php:108
+msgid ""
+"Check this box to automatically insert the output at the end of blog posts. "
+"If you do not do this then you will need to manually insert shortcode or "
+"call the function in PHP."
+msgstr ""
+
+#: wp-scribe-box.php:108
+msgid "Auto insert Scribe box at the end of posts?"
+msgstr ""
+
+#: wp-scribe-box.php:111
+msgid ""
+"Check this box to automatically insert the output at the end of blog posts. "
+"If you don't do this then you will need to manually insert shortcode or call "
+"the function in PHP."
+msgstr ""
+
+#: wp-scribe-box.php:112
+msgid "Do you want to add rel=nofollow to all links?"
+msgstr ""
+
+#: wp-scribe-box.php:112
+msgid "Nofollow links?"
+msgstr ""
+
+#: wp-scribe-box.php:115
+msgid "Do you want to add rel=\"nofollow\" to all links?"
+msgstr ""
+
+#: wp-scribe-box.php:116
+msgid "Check this box to open links in a new window."
+msgstr ""
+
+#: wp-scribe-box.php:116
+msgid "Open links in new window?"
+msgstr ""
+
+#: wp-scribe-box.php:119
+msgid "Check this box to open links in a new window. Requires Javascript."
+msgstr ""
+
+#: wp-scribe-box.php:120
+msgid "Select the default image."
+msgstr ""
+
+#: wp-scribe-box.php:120
+msgid "Default image"
+msgstr ""
+
+#: wp-scribe-box.php:138
+msgid "The name of the parameter"
+msgstr ""
+
+#: wp-scribe-box.php:138
+msgid "Parameter Name"
+msgstr ""
+
+#: wp-scribe-box.php:139
+msgid "Is this parameter required?"
+msgstr ""
+
+#: wp-scribe-box.php:139
+msgid "Is Required?"
+msgstr ""
+
+#: wp-scribe-box.php:140
+msgid "What data type this parameter accepts"
+msgstr ""
+
+#: wp-scribe-box.php:140
+msgid "Data Type"
+msgstr ""
+
+#: wp-scribe-box.php:141
+msgid "What, if any, is the default if no value is specified"
+msgstr ""
+
+#: wp-scribe-box.php:141
+msgid "Default Value"
+msgstr ""
+
+#: wp-scribe-box.php:154
+msgid "Yes"
+msgstr ""
+
+#: wp-scribe-box.php:157
+msgid "No"
+msgstr ""
+
+#: wp-scribe-box.php:164
+msgid "true"
+msgstr ""
+
+#: wp-scribe-box.php:167
+msgid "false"
+msgstr ""
+
+#: wp-scribe-box.php:170
+msgid "this value is blank by default"
+msgstr ""
+
+#: wp-scribe-box.php:183 wp-scribe-box.php:387
+msgid "Documentation"
+msgstr ""
+
+#: wp-scribe-box.php:184 wp-scribe-box.php:388
+msgid "FAQ"
+msgstr ""
+
+#: wp-scribe-box.php:185
+msgid "If you like this plugin, please "
+msgstr ""
+
+#: wp-scribe-box.php:187
+msgid "rate it on WordPress.org"
+msgstr ""
+
+#: wp-scribe-box.php:189
+msgid "and click the "
+msgstr ""
+
+#: wp-scribe-box.php:191
+msgid "Works"
+msgstr ""
+
+#: wp-scribe-box.php:193
+msgid "button. For support please visit the "
+msgstr ""
+
+#: wp-scribe-box.php:195
+msgid "forums"
+msgstr ""
+
+#: wp-scribe-box.php:201
+msgid ""
+"Disclaimer: This plugin is not affiliated with or endorsed by ShareASale or "
+"CopyBlogger Media."
+msgstr ""
+
+#: wp-scribe-box.php:251 wp-scribe-box.php:314
+msgid ""
+"plugin is disabled. Either you did not pass a necessary setting to the "
+"plugin, or did not configure a default. Check Settings page."
+msgstr ""
+
+#: wp-scribe-box.php:293
+msgid ""
+"shows you the language the audience prefers when searching and discussing on "
+"social networks, before you begin to create content."
+msgstr ""
+
+#: wp-scribe-box.php:294
+msgid ""
+" Once your content is created, Scribe reveals other profitable topics and "
+"keyword phrases. Scribe analyzes your content, and tells you exactly how to "
+"gently tweak it for better search engine rankings. Scribe also analyzes your "
+"overall site content to help you execute on your go-forward content strategy."
+msgstr ""
+
+#: wp-scribe-box.php:296
+msgid ""
+"helps you crosslink your content to increase usability and time on site, "
+"identify websites for guest writing, strategic alliances, and link building, "
+"and locate social media users who'll want to share your content."
+msgstr ""
+
+#: wp-scribe-box.php:297
+msgid ""
+"Scribe is the ultimate optimization tool for empowered online marketing. "
+msgstr ""
+
+#: wp-scribe-box.php:298
+msgid "See what Scribe can do!"
+msgstr ""
+
+#: wp-scribe-box.php:309
+msgid "Get More Traffic and Leads With Less Time and Hassle"
+msgstr ""
+
+#: wp-scribe-box.php:311
+msgid "Scribe"
+msgstr ""
+
+#: wp-scribe-box.php:348
+msgid "is currently disabled."
+msgstr ""
+
+#: wp-scribe-box.php:351
+msgid ""
+"WARNING: Affiliate URL missing. Please enter it below, or pass it to the "
+"shortcode or function, otherwise the plugin won't do anything."
+msgstr ""
+
+#: wp-scribe-box.php:374
+msgid "Settings"
+msgstr ""
+
+#: wp-scribe-box.php:386
+msgid "Support"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP Scribe Box"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.jimmyscode.com/wordpress/wp-scribe-box/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Display the Scribe affiliate box on your WordPress website. Make money as a "
+"Scribe affiliate."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jimmy Pe&ntilde;a"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.jimmyscode.com/"
+msgstr ""

@@ -1,7 +1,7 @@
 === WP Scribe Box ===
 Tags: studiopress, scribe, marketing, commission, box, rounded, image
 Requires at least: 3.5
-Tested up to: 3.8.1
+Tested up to: 3.9
 Contributors: jp2112
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW
 Stable tag: trunk
@@ -14,7 +14,7 @@ Display the Scribe affiliate marketing box on your website using shortcodes or P
 
 WP Scribe Box is a plugin for WordPress that helps you create compelling content and optimize it for social search. Copyblogger Media (the company that makes Scribe) affiliates can earn commission on every referral. This content box displays marketing text and logo that can help drive referrals through your website.
 
-Requires WP 3.5 and PHP 5.0 and above
+Disclaimer: This plugin is not affiliated with or endorsed by ShareASale or CopyBlogger Media.
 
 = Features =
 
@@ -185,6 +185,10 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.1.4 =
+- some minor code optimizations
+- verified compatibility with 3.9
+
 = 0.1.3 =
 - OK, I am going to stop playing with the plugin for now
 
@@ -234,6 +238,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.4 =
+- some minor code optimizations, verified compatibility with 3.9
 
 = 0.1.3 =
 - OK, I am going to stop playing with the plugin for now
