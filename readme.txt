@@ -185,6 +185,9 @@ The label on the toolbar button is "Scribe Box".
 
 == Changelog ==
 
+= 0.1.5 =
+- fix for wp_kses
+
 = 0.1.4 =
 - some minor code optimizations
 - verified compatibility with 3.9
@@ -238,6 +241,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.5 =
+- fix for wp_kses
 
 = 0.1.4 =
 - some minor code optimizations, verified compatibility with 3.9
