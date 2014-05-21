@@ -25,6 +25,7 @@ Disclaimer: This plugin is not affiliated with or endorsed by ShareASale or Copy
 - Links can be opened in new window
 - Includes standard marketing language, or use your own
 - Automatically insert the Scribe box after each post
+- Hide the output for users who are logged in
 
 <strong>If you use and enjoy this plugin, please rate it and click the "Works" button below so others know that it works with the latest version of WordPress.</strong>
 
@@ -178,12 +179,24 @@ This plugin adds one or more toolbar buttons to the HTML editor. You will not se
 
 The label on the toolbar button is "Scribe Box".
 
+= I am using the shortcode but the parameters aren't working. =
+
+On the plugin settings page, go to the "Parameters" tab. There is a list of possible parameters there along with the default values. Make sure you are spelling the parameters correctly.
+
+The Parameters tab also contains sample shortcode and PHP code.
+
 == Screenshots ==
 
 1. Plugin settings page
 2. Sample output
 
 == Changelog ==
+
+= 0.1.7 =
+- option to show the output only to users who are not logged in
+- option to show full marketing text or only partial in the output
+- minor code optimizations
+- use 'affurl', 'url', 'link' or 'href' as the URL parameter name
 
 = 0.1.6 =
 - fix 2 for wp_kses
@@ -244,6 +257,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.7 =
+- option to show the output only to users who are not logged in; option to show full marketing text or only partial in the output; minor code optimizations; use 'affurl', 'url', 'link' or 'href' as the URL parameter name
 
 = 0.1.6 =
 - fix 2 for wp_kses
