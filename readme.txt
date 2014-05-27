@@ -192,6 +192,10 @@ The Parameters tab also contains sample shortcode and PHP code.
 
 == Changelog ==
 
+= 0.1.8 =
+- minor code fix
+- updated support tab
+
 = 0.1.7 =
 - option to show the output only to users who are not logged in
 - option to show full marketing text or only partial in the output
@@ -257,6 +261,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.1.8 =
+- minor code fix; updated support tab
 
 = 0.1.7 =
 - option to show the output only to users who are not logged in; option to show full marketing text or only partial in the output; minor code optimizations; use 'affurl', 'url', 'link' or 'href' as the URL parameter name

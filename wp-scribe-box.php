@@ -3,7 +3,7 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.1.7
+Version: 0.1.8
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	// plugin constants
 	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-	define('WPSB_VERSION', '0.1.7');
+	define('WPSB_VERSION', '0.1.8');
 	define('WPSB_SLUG', 'wp-scribe-box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
 	define('WPSB_OPTION', 'wp_scribe_box');
@@ -216,11 +216,11 @@ License: GPLv2 or later
 			$nonloggedonly = (bool)$nonloggedonly;
 			$showfulltext = (bool)$showfulltext;
 			// allow alternate parameter names for affurl
-			if ($atts['url']) {
+			if (isset($atts['url'])) {
 				$affiliate_url = esc_url($atts['url']);
-			} elseif ($atts['link']) {
+			} elseif (isset($atts['link'])) {
 				$affiliate_url = esc_url($atts['link']);
-			} elseif ($atts['href']) {
+			} elseif (isset($atts['href'])) {
 				$affiliate_url = esc_url($atts['href']);
 			}
 		}
@@ -470,15 +470,23 @@ License: GPLv2 or later
 		return $var;
 	}
 	function wpsb_getsupportinfo($slugname = '', $localname = '') {
-		$output = sprintf( __('<a href="http://wordpress.org/extend/plugins/%s/">Documentation</a> | ', $localname), $slugname);
-		$output .= sprintf( __('<a href="http://wordpress.org/plugins/%s/faq/">FAQ</a><br />', $localname), $slugname);
+		$output = __('Do you need help with this plugin? Check out the following resources:', $localname);
+		$output .= '<ol>';
+		$output .= '<li>' . sprintf( __('<a href="http://wordpress.org/extend/plugins/%s/">Documentation</a>', $localname), $slugname) . '</li>';
+		$output .= '<li>' . sprintf( __('<a href="http://wordpress.org/plugins/%s/faq/">FAQ</a><br />', $localname), $slugname) . '</li>';
+		$output .= '<li>' . sprintf( __('<a href="http://wordpress.org/support/plugin/%s">Support Forum</a><br />', $localname), $slugname) . '</li>';
+		$output .= '<li>' . sprintf( __('<a href="http://www.jimmyscode.com/wordpress/%s">Plugin Homepage / Demo</a><br />', $localname), $slugname) . '</li>';
+		$output .= '<li>' . sprintf( __('<a href="http://wordpress.org/extend/plugins/%s/developers/">Development</a><br />', $localname), $slugname) . '</li>';
+		$output .= '<li>' . sprintf( __('<a href="http://wordpress.org/plugins/%s/changelog/">Changelog</a><br />', $localname), $slugname) . '</li>';
+		$output .= '</ol>';
+		
 		$output .= sprintf( __('If you like this plugin, please <a href="http://wordpress.org/support/view/plugin-reviews/%s/">rate it on WordPress.org</a>', $localname), $slugname);
 		$output .= sprintf( __(' and click the <a href="http://wordpress.org/plugins/%s/#compatibility">Works</a> button. ', $localname), $slugname);
-		$output .= sprintf( __('For support please visit the <a href="http://wordpress.org/support/plugin/%s">forums</a>.', $localname), $slugname);
+		$output .= '<br /><br /><br />';
+		$output .= __('Your donations encourage further development and support. ', $localname);
+		$output .= '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Support this plugin" width="92" height="26" /></a>';
 		$output .= '<br /><br />';
-		$output .= '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7EX9NB9TLFHVW"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal" title="Donate with PayPal" width="92" height="26" /></a>';
-		$output .= '<br /><br />';
-		return $output;				
+		return $output;
 	}
 	
 	function wpsb_parameters_table($localname = '', $sc_defaults, $reqparms) {
@@ -549,7 +557,7 @@ License: GPLv2 or later
 				} else {
 					$output .= '<strong>' . $plugin_defaults_keys[$i] . '</strong>=' . $plugin_defaults_values[$i];
 				}
-				if ($i < count($plugin_defaults_keys) - 1) {
+				if ($i < count($plugin_defaults_keys) - 2) {
 					$output .= ' ';
 				}
 			}
