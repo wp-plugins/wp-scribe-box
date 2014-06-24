@@ -3,7 +3,7 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.1.8
+Version: 0.1.9
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -11,7 +11,7 @@ License: GPLv2 or later
 
 	// plugin constants
 	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-	define('WPSB_VERSION', '0.1.8');
+	define('WPSB_VERSION', '0.1.9');
 	define('WPSB_SLUG', 'wp-scribe-box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
 	define('WPSB_OPTION', 'wp_scribe_box');
@@ -63,12 +63,17 @@ License: GPLv2 or later
 	}
 	// validation function
 	function wpsb_validation($input) {
-		// sanitize url
-		$input[WPSB_DEFAULT_URL_NAME] = esc_url($input[WPSB_DEFAULT_URL_NAME]);
-		// sanitize image
-		$input[WPSB_DEFAULT_IMAGE_NAME] = sanitize_text_field($input[WPSB_DEFAULT_IMAGE_NAME]);
-		if (!$input[WPSB_DEFAULT_IMAGE_NAME]) { // set to default
-			$input[WPSB_DEFAULT_IMAGE_NAME] = WPSB_DEFAULT_IMAGE;
+		if (!empty($input)) {
+			// validate all form fields
+			$input[WPSB_DEFAULT_URL_NAME] = esc_url($input[WPSB_DEFAULT_URL_NAME]);
+			$input[WPSB_DEFAULT_ENABLED_NAME] = (bool)$input[WPSB_DEFAULT_ENABLED_NAME];
+			$input[WPSB_DEFAULT_ROUNDED_NAME] = (bool)$input[WPSB_DEFAULT_ROUNDED_NAME];
+			$input[WPSB_DEFAULT_NOFOLLOW_NAME] = (bool)$input[WPSB_DEFAULT_NOFOLLOW_NAME];
+			$input[WPSB_DEFAULT_AUTO_INSERT_NAME] = (bool)$input[WPSB_DEFAULT_AUTO_INSERT_NAME];
+			$input[WPSB_DEFAULT_NEWWINDOW_NAME] = (bool)$input[WPSB_DEFAULT_NEWWINDOW_NAME];
+			$input[WPSB_DEFAULT_NONLOGGEDUSERS_NAME] = (bool)$input[WPSB_DEFAULT_NONLOGGEDUSERS_NAME];
+			$input[WPSB_DEFAULT_USEEXTENDED_TEXT_NAME] = (bool)$input[WPSB_DEFAULT_USEEXTENDED_TEXT_NAME];
+			$input[WPSB_DEFAULT_IMAGE_NAME] = sanitize_text_field($input[WPSB_DEFAULT_IMAGE_NAME]);
 		}
 		return $input;
 	}
@@ -87,10 +92,10 @@ License: GPLv2 or later
 	?>
 		<div class="wrap">
 			<h2 id="plugintitle"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/scribe.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
-			<div>You are running plugin version <strong><?php echo WPSB_VERSION; ?></strong>.</div>
+			<div><?php _e('You are running plugin version', wpsb_get_local()); ?> <strong><?php echo WPSB_VERSION; ?></strong>.</div>
 			
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
-			<?php $active_tab = (isset($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
+			<?php $active_tab = (!empty($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
 			<h2 class="nav-tab-wrapper">
 			  <a href="?page=<?php echo wpsb_get_slug(); ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', wpsb_get_local()); ?></a>
 				<a href="?page=<?php echo wpsb_get_slug(); ?>&tab=parameters" class="nav-tab <?php echo $active_tab == 'parameters' ? 'nav-tab-active' : ''; ?>"><?php _e('Parameters', wpsb_get_local()); ?></a>
@@ -105,44 +110,52 @@ License: GPLv2 or later
 			<h3 id="settings"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', wpsb_get_local()); ?></h3>
 				<table class="form-table" id="theme-options-wrap">
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ENABLED_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_ENABLED_NAME, WPSB_DEFAULT_ENABLED, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Is plugin enabled? Uncheck this to turn it off temporarily.', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]"><?php _e('Your Affiliate URL', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="url" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" value="<?php echo $options[WPSB_DEFAULT_URL_NAME]; ?>" /></td>
+						<td><input type="url" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_URL_NAME; ?>]" value="<?php echo wpsb_checkifset(WPSB_DEFAULT_URL_NAME, WPSB_DEFAULT_URL, $options); ?>" /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to apply rounded corners CSS to the output?', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]"><?php _e('Rounded corners CSS?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_ROUNDED_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_ROUNDED_NAME, WPSB_DEFAULT_ROUNDED, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Do you want to apply rounded corners CSS to the output?', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Do you want to apply rounded corners CSS to the output?', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to automatically insert the output at the end of blog posts. If you do not do this then you will need to manually insert shortcode or call the function in PHP.', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]"><?php _e('Auto insert Scribe box at the end of posts?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_AUTO_INSERT_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_AUTO_INSERT_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_AUTO_INSERT_NAME, WPSB_DEFAULT_AUTO_INSERT, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Check this box to automatically insert the output at the end of blog posts. If you don\'t do this then you will need to manually insert shortcode or call the function in PHP.', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Check this box to automatically insert the output at the end of blog posts. If you don\'t do this then you will need to manually insert shortcode or call the function in PHP.', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to add rel=nofollow to all links?', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]"><?php _e('Nofollow links?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NOFOLLOW_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_NOFOLLOW_NAME, WPSB_DEFAULT_NOFOLLOW, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Do you want to add rel="nofollow" to all links?', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Do you want to add rel="nofollow" to all links?', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Check this box to open links in a new window.', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]"><?php _e('Open links in new window?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NEWWINDOW_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NEWWINDOW_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_NEWWINDOW_NAME, WPSB_DEFAULT_NEWWINDOW, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Check this box to open links in a new window. Requires Javascript.', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Check this box to open links in a new window. Requires Javascript.', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Show to non-logged-in users only?', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NONLOGGEDUSERS_NAME; ?>]"><?php _e('Show to non-logged-in users only?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NONLOGGEDUSERS_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NONLOGGEDUSERS_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_NONLOGGEDUSERS_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NONLOGGEDUSERS_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NONLOGGEDUSERS_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_NONLOGGEDUSERS_NAME, WPSB_DEFAULT_NONLOGGEDUSERS, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Check this box to display the Scribe box to non-logged-in users only.', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Check this box to display the Scribe box to non-logged-in users only.', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Show full marketing text', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_USEEXTENDED_TEXT_NAME; ?>]"><?php _e('Show full marketing text', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_USEEXTENDED_TEXT_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_USEEXTENDED_TEXT_NAME; ?>]" value="1" <?php checked('1', $options[WPSB_DEFAULT_USEEXTENDED_TEXT_NAME]); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_USEEXTENDED_TEXT_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_USEEXTENDED_TEXT_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_USEEXTENDED_TEXT_NAME, WPSB_DEFAULT_USEEXTENDED_TEXT, $options)); ?> /></td>
 					</tr>
-					<tr valign="top"><td colspan="2"><?php _e('Check this box to display the full marketing text. If unchecked, only the first paragraph of text will be shown.', wpsb_get_local()); ?></td></tr>
+					<?php wpsb_explanationrow(__('Check this box to display the full marketing text. If unchecked, only the first paragraph of text will be shown.', wpsb_get_local())); ?>
+					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Select the default image.', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]"><?php _e('Default image', wpsb_get_local()); ?></label></strong></th>
 						<td><select id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" onChange="picture.src=this.options[this.selectedIndex].getAttribute('data-whichPicture');">
 									<?php $images = explode(",", WPSB_AVAILABLE_IMAGES);
 												for($i=0, $imagecount=count($images); $i < $imagecount; $i++) {
 													$imageurl = plugins_url(wpsb_get_path() . '/images/' . $images[$i] . '.png');
-													if ($images[$i] === $options[WPSB_DEFAULT_IMAGE_NAME]) { $selectedimage = $imageurl; }
-													echo '<option data-whichPicture="' . $imageurl . '" value="' . $images[$i] . '"' . selected($images[$i], $options[WPSB_DEFAULT_IMAGE_NAME], false) . '>' . $images[$i] . '</option>';
+													if ($images[$i] === (wpsb_checkifset(WPSB_DEFAULT_IMAGE_NAME, WPSB_DEFAULT_IMAGE, $options))) { $selectedimage = $imageurl; }
+													echo '<option data-whichPicture="' . $imageurl . '" value="' . $images[$i] . '"' . selected($images[$i], wpsb_checkifset(WPSB_DEFAULT_IMAGE_NAME, WPSB_DEFAULT_IMAGE, $options), false) . '>' . $images[$i] . '</option>';
 												} ?>
 							</select></td></tr>
 					<tr><td colspan="2"><img src="<?php if (!$selectedimage) { echo plugins_url(wpsb_get_path() . '/images/' . WPSB_DEFAULT_IMAGE . '.png'); } else { echo $selectedimage; } ?>" id="picture" /></td></tr>
@@ -180,8 +193,14 @@ License: GPLv2 or later
 		extract(shortcode_atts(wpsb_shortcode_defaults(), $atts));
 		// plugin is enabled/disabled from settings page only
 		$options = wpsb_getpluginoptions();
-		$enabled = (bool)$options[WPSB_DEFAULT_ENABLED_NAME];
+		if (!empty($options)) {
+			$enabled = (bool)$options[WPSB_DEFAULT_ENABLED_NAME];
+		} else {
+			$enabled = WPSB_DEFAULT_ENABLED;
+		}
 
+		$output = '';
+		
 		// ******************************
 		// derive shortcode values from constants
 		// ******************************
@@ -216,11 +235,11 @@ License: GPLv2 or later
 			$nonloggedonly = (bool)$nonloggedonly;
 			$showfulltext = (bool)$showfulltext;
 			// allow alternate parameter names for affurl
-			if (isset($atts['url'])) {
+			if (!empty($atts['url'])) {
 				$affiliate_url = esc_url($atts['url']);
-			} elseif (isset($atts['link'])) {
+			} elseif (!empty($atts['link'])) {
 				$affiliate_url = esc_url($atts['link']);
-			} elseif (isset($atts['href'])) {
+			} elseif (!empty($atts['href'])) {
 				$affiliate_url = esc_url($atts['href']);
 			}
 		}
@@ -297,8 +316,10 @@ License: GPLv2 or later
 	function wpsb_insert_premise_box($content) {
 		if (is_single()) {
 			$options = wpsb_getpluginoptions();
-			if ($options[WPSB_DEFAULT_AUTO_INSERT_NAME]) {
-				$content .= scribe_aff_box($options);
+			if (!empty($options)) {
+				if ($options[WPSB_DEFAULT_AUTO_INSERT_NAME]) {
+					$content .= scribe_aff_box($options);
+				}
 			}
 		}
 		return $content;
@@ -310,16 +331,18 @@ License: GPLv2 or later
 		global $pagenow;
 		if (current_user_can(WPSB_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') {
-				if ($_GET['page'] == wpsb_get_slug()) { // we are on this plugin's settings page
-					$options = wpsb_getpluginoptions();
-					if ($options != false) {
-						$enabled = (bool)$options[WPSB_DEFAULT_ENABLED_NAME];
-						$affiliate_url = $options[WPSB_DEFAULT_URL_NAME];
-						if (!$enabled) {
-							echo '<div id="message" class="error">' . WPSB_PLUGIN_NAME . ' ' . __('is currently disabled.', wpsb_get_local()) . '</div>';
-						}
-						if (($affiliate_url === WPSB_DEFAULT_URL) || ($affiliate_url === false)) {
-							echo '<div id="message" class="updated">' . __('WARNING: Affiliate URL missing. Please enter it below, or pass it to the shortcode or function, otherwise the plugin won\'t do anything.', wpsb_get_local()) . '</div>';
+				if (!empty($_GET['page'])) {
+					if ($_GET['page'] == wpsb_get_slug()) { // we are on this plugin's settings page
+						$options = wpsb_getpluginoptions();
+						if (!empty($options)) {
+							$enabled = (bool)$options[WPSB_DEFAULT_ENABLED_NAME];
+							$affiliate_url = $options[WPSB_DEFAULT_URL_NAME];
+							if (!$enabled) {
+								echo '<div id="message" class="error">' . WPSB_PLUGIN_NAME . ' ' . __('is currently disabled.', wpsb_get_local()) . '</div>';
+							}
+							if (($affiliate_url === WPSB_DEFAULT_URL) || ($affiliate_url === false)) {
+								echo '<div id="message" class="updated">' . __('WARNING: Affiliate URL missing. Please enter it below, or pass it to the shortcode or function, otherwise the plugin won\'t do anything.', wpsb_get_local()) . '</div>';
+							}
 						}
 					}
 				}
@@ -332,8 +355,10 @@ License: GPLv2 or later
 		global $pagenow;
 		if (current_user_can(WPSB_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') {
-				if ($_GET['page'] == wpsb_get_slug()) { // we are on this plugin's settings page
-					wpsb_admin_styles();
+				if (!empty($_GET['page'])) {
+					if ($_GET['page'] == wpsb_get_slug()) { // we are on this plugin's settings page
+						wpsb_admin_styles();
+					}
 				}
 			}
 		}
@@ -593,5 +618,14 @@ License: GPLv2 or later
 		$output .= '<br />}';
 		$output .= '</pre>';
 		return $output;	
+	}
+	function wpsb_checkifset($optionname, $optiondefault, $optionsarr) {
+		return (!empty($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
+	}
+	function wpsb_getlinebreak() {
+	  echo '<tr valign="top"><td colspan="2"></td></tr>';
+	}
+	function wpsb_explanationrow($msg = '') {
+		echo '<tr valign="top"><td></td><td><em>' . $msg . '</em></td></tr>';
 	}
 ?>
