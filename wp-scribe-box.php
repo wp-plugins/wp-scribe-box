@@ -3,15 +3,16 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.1.9
+Version: 0.2.0
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
 */
 
+if (!defined('WPSB_PLUGIN_NAME')) {
 	// plugin constants
 	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-	define('WPSB_VERSION', '0.1.9');
+	define('WPSB_VERSION', '0.2.0');
 	define('WPSB_SLUG', 'wp-scribe-box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
 	define('WPSB_OPTION', 'wp_scribe_box');
@@ -41,7 +42,7 @@ License: GPLv2 or later
 	define('WPSB_DEFAULT_NEWWINDOW_NAME', 'opennewwindow');
 	define('WPSB_DEFAULT_NONLOGGEDUSERS_NAME', 'nonloggedonly');
 	define('WPSB_DEFAULT_USEEXTENDED_TEXT_NAME', 'useextended');
-
+}
 	// oh no you don't
 	if (!defined('ABSPATH')) {
 		wp_die(__('Do not access this file directly.', wpsb_get_local()));
@@ -91,7 +92,7 @@ License: GPLv2 or later
 		}
 	?>
 		<div class="wrap">
-			<h2 id="plugintitle"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/scribe.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
+			<h2 id="plugintitle"><img src="<?php echo wpsb_getimagefilename('scribe.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php echo WPSB_PLUGIN_NAME; ?> by <a href="http://www.jimmyscode.com/">Jimmy Pe&ntilde;a</a></h2>
 			<div><?php _e('You are running plugin version', wpsb_get_local()); ?> <strong><?php echo WPSB_VERSION; ?></strong>.</div>
 			
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
@@ -107,7 +108,7 @@ License: GPLv2 or later
 			<?php $options = wpsb_getpluginoptions(); ?>
 			<?php update_option(wpsb_get_option(), $options); ?>
 			<?php if ($active_tab == 'settings') { ?>
-			<h3 id="settings"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', wpsb_get_local()); ?></h3>
+			<h3 id="settings"><img src="<?php echo wpsb_getimagefilename('settings.png'); ?>" title="" alt="" height="61" width="64" align="absmiddle" /> <?php _e('Plugin Settings', wpsb_get_local()); ?></h3>
 				<table class="form-table" id="theme-options-wrap">
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Is plugin enabled? Uncheck this to turn it off temporarily.', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]"><?php _e('Plugin enabled?', wpsb_get_local()); ?></label></strong></th>
 						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ENABLED_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_ENABLED_NAME, WPSB_DEFAULT_ENABLED, $options)); ?> /></td>
@@ -153,21 +154,21 @@ License: GPLv2 or later
 						<td><select id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_IMAGE_NAME; ?>]" onChange="picture.src=this.options[this.selectedIndex].getAttribute('data-whichPicture');">
 									<?php $images = explode(",", WPSB_AVAILABLE_IMAGES);
 												for($i=0, $imagecount=count($images); $i < $imagecount; $i++) {
-													$imageurl = plugins_url(wpsb_get_path() . '/images/' . $images[$i] . '.png');
+													$imageurl = wpsb_getimagefilename($images[$i] . '.png');
 													if ($images[$i] === (wpsb_checkifset(WPSB_DEFAULT_IMAGE_NAME, WPSB_DEFAULT_IMAGE, $options))) { $selectedimage = $imageurl; }
 													echo '<option data-whichPicture="' . $imageurl . '" value="' . $images[$i] . '"' . selected($images[$i], wpsb_checkifset(WPSB_DEFAULT_IMAGE_NAME, WPSB_DEFAULT_IMAGE, $options), false) . '>' . $images[$i] . '</option>';
 												} ?>
 							</select></td></tr>
-					<tr><td colspan="2"><img src="<?php if (!$selectedimage) { echo plugins_url(wpsb_get_path() . '/images/' . WPSB_DEFAULT_IMAGE . '.png'); } else { echo $selectedimage; } ?>" id="picture" /></td></tr>
+					<tr><td colspan="2"><img src="<?php if (!$selectedimage) { echo wpsb_getimagefilename(WPSB_DEFAULT_IMAGE . '.png'); } else { echo $selectedimage; } ?>" id="picture" /></td></tr>
 				</table>
 				<?php submit_button(); ?>
 			<?php } elseif ($active_tab == 'parameters') { ?>
-			<h3 id="parameters"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/parameters.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Plugin Parameters and Default Values', wpsb_get_local()); ?></h3>
+			<h3 id="parameters"><img src="<?php echo wpsb_getimagefilename('parameters.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Plugin Parameters and Default Values', wpsb_get_local()); ?></h3>
 			These are the parameters for using the shortcode, or calling the plugin from your PHP code.
 
 			<?php echo wpsb_parameters_table(wpsb_get_local(), wpsb_shortcode_defaults(), wpsb_required_parameters()); ?>			
 
-			<h3 id="examples"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/examples.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Shortcode and PHP Examples', wpsb_get_local()); ?></h3>
+			<h3 id="examples"><img src="<?php echo wpsb_getimagefilename('examples.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Shortcode and PHP Examples', wpsb_get_local()); ?></h3>
 			<h4><?php _e('Shortcode Format:', wpsb_get_local()); ?></h4>
 			<?php echo wpsb_get_example_shortcode('wp-scribe-box', wpsb_shortcode_defaults(), wpsb_get_local()); ?>
 
@@ -175,7 +176,7 @@ License: GPLv2 or later
 			<?php echo wpsb_get_example_php_code('wp-scribe-box', 'scribe_aff_box', wpsb_shortcode_defaults()); ?>
 			<?php _e('<small>Note: \'show\' is false by default; set it to <strong>true</strong> echo the output, or <strong>false</strong> to return the output to your PHP code.</small>', wpsb_get_local()); ?>
 			<?php } else { ?>
-			<h3 id="support"><img src="<?php echo plugins_url(wpsb_get_path() . '/images/support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', wpsb_get_local()); ?></h3>
+			<h3 id="support"><img src="<?php echo wpsb_getimagefilename('support.png'); ?>" title="" alt="" height="64" width="64" align="absmiddle" /> <?php _e('Support', wpsb_get_local()); ?></h3>
 				<div class="support">
 				<?php echo wpsb_getsupportinfo(wpsb_get_slug(), wpsb_get_local()); ?>
 				<small><?php _e('Disclaimer: This plugin is not affiliated with or endorsed by ShareASale or CopyBlogger Media.', wpsb_get_local()); ?></small>
@@ -294,7 +295,7 @@ License: GPLv2 or later
 					$img = $images[$options[WPSB_DEFAULT_IMAGE_NAME]];
 					if (!$img) { $img = WPSB_DEFAULT_IMAGE; }
 				}
-				$imageurl = plugins_url(wpsb_get_path() . '/images/' . $img . '.png');
+				$imageurl = wpsb_getimagefilename($img . '.png');
 				$imagedata = getimagesize($imageurl);
 				$output = '<div id="scribe-box"' . ($rounded ? ' class="wpsb-rounded-corners"' : '') . '>';
 				$output .= '<h3>' . __('Get More Traffic and Leads With Less Time and Hassle', wpsb_get_local()) . '</h3>';
@@ -620,12 +621,15 @@ License: GPLv2 or later
 		return $output;	
 	}
 	function wpsb_checkifset($optionname, $optiondefault, $optionsarr) {
-		return (!empty($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
+		return (isset($optionsarr[$optionname]) ? $optionsarr[$optionname] : $optiondefault);
 	}
 	function wpsb_getlinebreak() {
 	  echo '<tr valign="top"><td colspan="2"></td></tr>';
 	}
 	function wpsb_explanationrow($msg = '') {
 		echo '<tr valign="top"><td></td><td><em>' . $msg . '</em></td></tr>';
+	}
+	function wpsb_getimagefilename($fname = '') {
+		return plugins_url(wpsb_get_path() . '/images/' . $fname);
 	}
 ?>

@@ -192,6 +192,9 @@ The Parameters tab also contains sample shortcode and PHP code.
 
 == Changelog ==
 
+= 0.2.0 =
+- compressed CSS file
+
 = 0.1.9 =
 - code fix
 - admin CSS and page updates
@@ -265,6 +268,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.2.0 =
+- compressed CSS file
 
 = 0.1.9 =
 - code fix; admin CSS and page updates
