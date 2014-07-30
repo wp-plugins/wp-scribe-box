@@ -3,7 +3,7 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.2.0
+Version: 0.2.1
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -12,7 +12,7 @@ License: GPLv2 or later
 if (!defined('WPSB_PLUGIN_NAME')) {
 	// plugin constants
 	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-	define('WPSB_VERSION', '0.2.0');
+	define('WPSB_VERSION', '0.2.1');
 	define('WPSB_SLUG', 'wp-scribe-box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
 	define('WPSB_OPTION', 'wp_scribe_box');
@@ -96,7 +96,7 @@ if (!defined('WPSB_PLUGIN_NAME')) {
 			<div><?php _e('You are running plugin version', wpsb_get_local()); ?> <strong><?php echo WPSB_VERSION; ?></strong>.</div>
 			
 			<?php /* http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971 */ ?>
-			<?php $active_tab = (!empty($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
+			<?php $active_tab = (isset($_GET['tab']) ? $_GET['tab'] : 'settings'); ?>
 			<h2 class="nav-tab-wrapper">
 			  <a href="?page=<?php echo wpsb_get_slug(); ?>&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>"><?php _e('Settings', wpsb_get_local()); ?></a>
 				<a href="?page=<?php echo wpsb_get_slug(); ?>&tab=parameters" class="nav-tab <?php echo $active_tab == 'parameters' ? 'nav-tab-active' : ''; ?>"><?php _e('Parameters', wpsb_get_local()); ?></a>
@@ -332,7 +332,7 @@ if (!defined('WPSB_PLUGIN_NAME')) {
 		global $pagenow;
 		if (current_user_can(WPSB_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') {
-				if (!empty($_GET['page'])) {
+				if (isset($_GET['page'])) {
 					if ($_GET['page'] == wpsb_get_slug()) { // we are on this plugin's settings page
 						$options = wpsb_getpluginoptions();
 						if (!empty($options)) {
@@ -356,7 +356,7 @@ if (!defined('WPSB_PLUGIN_NAME')) {
 		global $pagenow;
 		if (current_user_can(WPSB_PERMISSIONS_LEVEL)) { // user has privilege
 			if ($pagenow == 'options-general.php') {
-				if (!empty($_GET['page'])) {
+				if (isset($_GET['page'])) {
 					if ($_GET['page'] == wpsb_get_slug()) { // we are on this plugin's settings page
 						wpsb_admin_styles();
 					}
