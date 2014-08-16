@@ -16,6 +16,14 @@ WP Scribe Box is a plugin for WordPress that helps you create compelling content
 
 Disclaimer: This plugin is not affiliated with or endorsed by ShareASale or CopyBlogger Media.
 
+<h3>If you need help with this plugin</h3>
+
+If this plugin breaks your site or just flat out does not work, please go to <a href="http://wordpress.org/plugins/wp-scribe-box/#compatibility">Compatibility</a> and click "Broken" after verifying your WordPress version and the version of the plugin you are using.
+
+Then, create a thread in the <a href="http://wordpress.org/support/plugin/wp-scribe-box">Support</a> forum with a description of the issue. Make sure you are using the latest version of WordPress and the plugin before reporting issues, to be sure that the issue is with the current version and not with an older version where the issue may have already been fixed.
+
+<strong>Please do not use the <a href="http://wordpress.org/support/view/plugin-reviews/wp-scribe-box">Reviews</a> section to report issues or request new features.</strong>
+
 = Features =
 
 - Display your affiliate link anywhere
@@ -192,6 +200,9 @@ The Parameters tab also contains sample shortcode and PHP code.
 
 == Changelog ==
 
+= 0.2.2 =
+- updated .pot file and readme
+
 = 0.2.1 =
 - fixed validation issue
 
@@ -271,6 +282,9 @@ some security hardening added
 created
 
 == Upgrade Notice ==
+
+= 0.2.2 =
+- updated .pot file and readme
 
 = 0.2.1 =
 - fixed validation issue
