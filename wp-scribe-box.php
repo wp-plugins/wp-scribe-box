@@ -3,7 +3,7 @@
 Plugin Name: WP Scribe Box
 Plugin URI: http://www.jimmyscode.com/wordpress/wp-scribe-box/
 Description: Display the Scribe affiliate box on your WordPress website. Make money as a Scribe affiliate.
-Version: 0.2.2
+Version: 0.2.3
 Author: Jimmy Pe&ntilde;a
 Author URI: http://www.jimmyscode.com/
 License: GPLv2 or later
@@ -12,14 +12,14 @@ License: GPLv2 or later
 if (!defined('WPSB_PLUGIN_NAME')) {
 	// plugin constants
 	define('WPSB_PLUGIN_NAME', 'WP Scribe Box');
-	define('WPSB_VERSION', '0.2.2');
+	define('WPSB_VERSION', '0.2.3');
 	define('WPSB_SLUG', 'wp-scribe-box');
 	define('WPSB_LOCAL', 'wp_scribe_box');
 	define('WPSB_OPTION', 'wp_scribe_box');
 	define('WPSB_OPTIONS_NAME', 'wp_scribe_box_options');
 	define('WPSB_PERMISSIONS_LEVEL', 'manage_options');
 	define('WPSB_PATH', plugin_basename(dirname(__FILE__)));
-	/* defaults */
+	/* defaults */ 
 	define('WPSB_DEFAULT_ENABLED', true);
 	define('WPSB_DEFAULT_URL', '');
 	define('WPSB_ROUNDED', false);
@@ -121,7 +121,7 @@ if (!defined('WPSB_PLUGIN_NAME')) {
 					<?php wpsb_explanationrow(__('Enter your affiliate URL here. This will be inserted wherever you use the shortcode.', wpsb_get_local())); ?>
 					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to apply rounded corners CSS to the output?', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]"><?php _e('Rounded corners CSS?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_ROUNDED_NAME, WPSB_DEFAULT_ROUNDED, $options)); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_ROUNDED_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_ROUNDED_NAME, WPSB_ROUNDED, $options)); ?> /></td>
 					</tr>
 					<?php wpsb_explanationrow(__('Do you want to apply rounded corners CSS to the output?', wpsb_get_local())); ?>
 					<?php wpsb_getlinebreak(); ?>
@@ -131,7 +131,7 @@ if (!defined('WPSB_PLUGIN_NAME')) {
 					<?php wpsb_explanationrow(__('Check this box to automatically insert the output at the end of blog posts. If you don\'t do this then you will need to manually insert shortcode or call the function in PHP.', wpsb_get_local())); ?>
 					<?php wpsb_getlinebreak(); ?>
 					<tr valign="top"><th scope="row"><strong><label title="<?php _e('Do you want to add rel=nofollow to all links?', wpsb_get_local()); ?>" for="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]"><?php _e('Nofollow links?', wpsb_get_local()); ?></label></strong></th>
-						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_NOFOLLOW_NAME, WPSB_DEFAULT_NOFOLLOW, $options)); ?> /></td>
+						<td><input type="checkbox" id="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" name="<?php echo wpsb_get_option(); ?>[<?php echo WPSB_DEFAULT_NOFOLLOW_NAME; ?>]" value="1" <?php checked('1', wpsb_checkifset(WPSB_DEFAULT_NOFOLLOW_NAME, WPSB_NOFOLLOW, $options)); ?> /></td>
 					</tr>
 					<?php wpsb_explanationrow(__('Do you want to add rel="nofollow" to all links?', wpsb_get_local())); ?>
 					<?php wpsb_getlinebreak(); ?>
@@ -300,7 +300,7 @@ if (!defined('WPSB_PLUGIN_NAME')) {
 				$output = '<div id="scribe-box"' . ($rounded ? ' class="wpsb-rounded-corners"' : '') . '>';
 				$output .= '<h3>' . __('Get More Traffic and Leads With Less Time and Hassle', wpsb_get_local()) . '</h3>';
 				$output .= '<a' . ($opennewwindow ? ' onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;" ' : ' ') . ($nofollow ? ' rel="nofollow" ' : ' ') . 'href="' . $affiliate_url . '">';
-				$output .= '<img class="alignright" src="' . $imageurl . '" alt="' . __('Scribe', wpsb_get_local()) . '" title="' . __('Scribe', wpsb_get_local()) . '" width="' . $imagedata[0] . '" height="' . $imagedata[1] . '" /></a>';
+				$output .= '<img class="alignright" src="' . $imageurl . '" alt="' . __('Scribe', wpsb_get_local()) . '" title="' . __('Try It Now!', wpsb_get_local()) . '" width="' . $imagedata[0] . '" height="' . $imagedata[1] . '" /></a>';
 				$output .= do_shortcode($text) . '</div>';
 			}
 		} else { // plugin disabled
